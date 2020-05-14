@@ -3,7 +3,9 @@ package main;
 import java.util.Scanner;
 
 import player.Player;
-
+// 진행상황 - 1부리그까지 대략적인 틀 완성.
+// 추가 항목 - 유저 스탯 증가 메소드 만들기, 스태미너 소모 로직 넣기, 스태미너 자동 회복 스레드 적용, 선수 훈련 스레드 적용, 페널티킥 스레드 적용  
+//         --> 그리고 마지막으로 후반전 만들기 --> 테스트 후 영상 찍기
 public class Main {
 
 	public static void main(String[] args) {
