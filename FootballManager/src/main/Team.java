@@ -15,17 +15,18 @@ import player.Player;
 
 public class Team{
 	String manager_name;
+	int money = 20000;
 	
 	String team1;
-	String team2 = "천안FC";
-	String team3 = "춘천FC";
-	String team4 = "안동FC";
-	String team5 = "용인FC";
-	String team6 = "경기FC";
-	String team7 = "부산FC";
-	String team8 = "서울FC";
-	String team9 = "수원FC";
-	String team10 = "성남FC";
+	public String team2 = "천안FC";
+	public String team3 = "춘천FC";
+	public String team4 = "안동FC";
+	public String team5 = "용인FC";
+	public String team6 = "경기FC";
+	public String team7 = "부산FC";
+	public String team8 = "서울FC";
+	public String team9 = "수원FC";
+	public String team10 = "성남FC";
 	
 	Gk 미손 = new Gk("미손", 10, 10, 10);
 	Attacker 날도 = new Attacker("날도", 70, 10 , 10);
@@ -171,18 +172,25 @@ public class Team{
 	
 	// 팀정보
 	public void TeamInfo() {
+		System.out.println("===================================================================================================================================================");
 		System.out.println("팀 이름: " + this.team1);
 		System.out.println("감독 이름: " + this.manager_name);
+		System.out.println("팀 자금: " + this.money + "만원");
 		System.out.println("----------------선수 목록----------------");
 		System.out.println("  이름         공격  패스  수비      포지션");
 		for(int i=0; i<team1_list.size(); i++) {
 			System.out.println("["+team1_list.get(i).name+"]" + "    " + team1_list.get(i).at_stat + "  " + team1_list.get(i).md_stat + "   " + team1_list.get(i).df_stat + "   " + team1_list.get(i).position);
+			
 		}
-		
+		System.out.println("===================================================================================================================================================");
 	}
 	
-	// 게임 리스트
-	public void GameList() {
+	// 선발선수명단 교체해주는 method
+	public void ChangePlayer() {
+		
+		while(true) {
+		Player temp1;
+		Player temp2;
 		System.out.println("----------------선발 명단----------------");
 		System.out.println("  이름         공격  패스  수비      포지션");
 		for(int i=0; i<11; i++) {
@@ -193,16 +201,57 @@ public class Team{
 		for(int i=11; i<team1_list.size(); i++) {
 			System.out.println("["+team1_list.get(i).name+"]" + "    " + team1_list.get(i).at_stat + "  " + team1_list.get(i).md_stat + "   " + team1_list.get(i).df_stat + "   " + team1_list.get(i).position);
 		}
+		
+		System.out.println("누구를 선발명단에서 제외시키겠습니까?");
+		for(int i=0; i<11; i++) {
+			System.out.print((i+1) + ")" + team1_list.get(i).name + "  ");
+		}
+		System.out.println("12)교체없이 경기 진행");
+		Scanner sc = new Scanner(System.in);
+		int choice;
+		choice = sc.nextInt();
+		if(choice<12) {
+		System.out.println(team1_list.get(choice-1).name + "선수를 선발명단에서 제외시킵니다.");
+		}
+		else if(choice==12) {
+			System.out.println("선수 교체 없이 바로 경기 진행합니다.");
+			return;
+		}
+		
+		System.out.println("누구를 선발명단에 포함시키겠습니까?");
+		for(int i=11; i < team1_list.size(); i++) {
+			System.out.print((i+1) + ")" + team1_list.get(i).name + "  ");
+		}
+		System.out.println((team1_list.size()+1) + ")교체없이 경기진행");
+		int choice2;
+		choice2 = sc.nextInt();
+		if(choice2>11 && choice2 < (team1_list.size() + 1)) {
+			System.out.println(team1_list.get(choice2-1).name + "선수를 선발명단에 포함시킵니다.");
+			temp1 = team1_list.get(choice-1);
+			temp2 = team1_list.get(choice2-1);
+			team1_list.remove(choice2-1);
+			team1_list.remove(choice-1);
+			team1_list.add(choice-1, temp2);
+			team1_list.add(temp1);
+		}
+		
+		else if(choice2 == (team1_list.size() + 1)) {
+			System.out.println("선수 교체 없이 바로 경기 진행합니다.");
+			return;
+		}
+		
+		}
+		
 	}
 	
 	// 선수 훈련
 	public void Training() {
-		int exception = 0;
+		
 		int choice;
 		ArrayList<Player> player = new ArrayList<Player>(Arrays.asList());
 		
 		
-		while (exception==0) {
+		while (true) {
 			System.out.println("----------------훈련 가능 명단----------------");
 			System.out.println("  이름         공격  패스  수비      포지션");
 			for(int i=11; i<team1_list.size(); i++) {
@@ -219,9 +268,9 @@ public class Team{
 			System.out.println();
 			
 			choice = sc.nextInt();
-			if (choice == team1_list.size()) {
+			if (choice == team1_list.size() + 1) {
 				System.out.println("메뉴로 돌아갑니다.");
-				exception++;
+				break;
 			}
 			else if(11<choice && choice<team1_list.size()) {
 				System.out.println(team1_list.get(choice-1).name + "선수를 훈련시킵니다.");
@@ -231,5 +280,23 @@ public class Team{
 			
 		}
 	}
+	
+	// 선수 능력치, 팀 자금 올려주는 method
+	public void Plus(int result) {
+		if(result == 2) {
+			this.money = this.money + 1500;
+			for(int i=0; i<11; i++) {
+				team1_list.get(i).at_stat++;
+				team1_list.get(i).md_stat++;
+				team1_list.get(i).df_stat++;
+			}
+		}
+		if(result == 1) {
+			this.money = this.money + 500;
+		}
+	}
+	
+	
+	
 
 }

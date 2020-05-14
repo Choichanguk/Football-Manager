@@ -12,6 +12,8 @@ public class Defender extends Player{
 	}
 	
 	// 태클
-	public void event1() {}
+	public void df_event1(String player) {
+		System.out.println(player + "선수, 날카로운 태클을 통해 상대팀의 역습을 막아냅니다!");
+	}
 	
 }
